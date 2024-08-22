@@ -121,17 +121,21 @@ RTC::ReturnCode_t RunAway::onExecute(RTC::UniqueId /*ec_id*/)
         if (m_LRFIn.isNew()) {
             m_LRFIn.read();
             if (m_barcode.data == 404) {  //バーコードが検出できていない
-                if (m_LRF.data == 0) {  //LRFからのデータが0なら前進
-                    m_out.data.vx = 0.5;
-                    m_out.data.va = 0;
-                }
-                else if (m_LRF.data == 1) {  //LRFからのデータが1なら右回転
+                if (m_LRF.data == 0) {  //LRFからのデータが0なら左回転(右回転)
                     m_out.data.vx = 0;
                     m_out.data.va = -1.0;
                 }
-                else if (m_LRF.data == 2) {  //LRFからのデータが2なら左回転
+                else if (m_LRF.data == 1) {  //LRFからのデータが1なら前進(後退)
+                    m_out.data.vx = -0.5;
+                    m_out.data.va = 0;
+                }
+                else if (m_LRF.data == 2) {  //LRFからのデータが2なら右回転(左回転)
                     m_out.data.vx = 0;
                     m_out.data.va = 1.0;
+                }
+                else if (m_LRF.data == 3) {  //LRFからのデータが3なら後退(前進)
+                    m_out.data.vx = 0.5;
+                    m_out.data.va = 0;
                 }
                 else {
                     m_out.data.vx = 0;
